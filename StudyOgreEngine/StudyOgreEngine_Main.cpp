@@ -1,14 +1,10 @@
 #include <Windows.h>
+#include <assert.h>
 
 LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
 
-int WINAPI WindowMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
-	/*WNDCLASSEX ff;
-	ff.
-	WNDCLASS www;
-	CreateWindow()*/
-
 	WNDCLASS windowClass;
 	ZeroMemory(&windowClass, sizeof(WNDCLASS));
 
@@ -19,13 +15,38 @@ int WINAPI WindowMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdli
 	windowClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	windowClass.hInstance = hInstance;
 	windowClass.lpfnWndProc = WindowProcedure;
-	windowClass.lpszClassName
+	windowClass.lpszClassName = L"StudyOgre";
+	windowClass.lpszMenuName = L"StudyOgre";
+	windowClass.style = CS_HREDRAW | CS_VREDRAW;
 
-	HWND mainWindow;
+	RegisterClass(&windowClass);
+
+	HWND mainWindow = NULL;
 	mainWindow = CreateWindow(L"StudyOgre", L"StudyOgre", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
+	assert(mainWindow != NULL);
 
 	ShowWindow(mainWindow, SW_SHOW);
+
+	MSG message;
+	ZeroMemory(&message, sizeof(MSG));
+
+	while (1)
+	{
+		if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
+		{
+			if (message.message == WM_QUIT)break;
+
+			TranslateMessage(&message);
+			DispatchMessage(&message);
+		}
+		else
+		{
+
+		}
+	}
+
+	return (int)message.wParam;
 }
 
 LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam)
