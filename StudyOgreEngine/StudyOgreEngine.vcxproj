@@ -115,7 +115,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="StudyOgreEngine_Home.cpp" />
     <ClCompile Include="StudyOgreEngine_Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StudyOgreEngine_Home.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

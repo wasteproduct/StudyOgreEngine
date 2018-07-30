@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <assert.h>
+#include "StudyOgreEngine_Home.h"
 
 LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
 
@@ -10,7 +11,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
-	windowClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	windowClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	windowClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	windowClass.hInstance = hInstance;
@@ -31,6 +32,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	MSG message;
 	ZeroMemory(&message, sizeof(MSG));
 
+	StudyOgreEngine_Home *home = nullptr;
+	home = new StudyOgreEngine_Home;
+	assert(home != nullptr);
+	home->Initialize();
+
 	while (1)
 	{
 		if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
@@ -42,9 +48,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 		}
 		else
 		{
-
+			home->Update();
+			home->Render();
 		}
 	}
+
+	home->Release();
+	delete home;
+	home = nullptr;
 
 	return (int)message.wParam;
 }
